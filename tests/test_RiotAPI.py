@@ -15,38 +15,34 @@ def get_api_key():
 def test_get_champion_mastery_by_summoner_id():
     riot = Xayah.RiotAPI(get_api_key())
     response = riot.get_champion_mastery_by_summoner_id(summoner_id, region)
-    assert response.isinstance(str)
+    assert isinstance(response, str)
 
 
 def test_get_summoner_by_account_id():
     riot = Xayah.RiotAPI(get_api_key())
     response = riot.get_summoner_by_account_id(account_id, region)
-    print(response)
-    assert response.isinstance(str)
+    assert isinstance(response, str)
 
 
 def test_get_summoner_by_puuid():
     riot = Xayah.RiotAPI(get_api_key())
     response = riot.get_summoner_by_puuid(puuid, region)
-    print(response)
-    assert response.isinstance(str)
+    assert isinstance(response, str)
 
 
 def test_get_summoner_by_name():
     riot = Xayah.RiotAPI(get_api_key())
     response = riot.get_summoner_by_name(account, region)
-    print(response)
-    assert response.isinstance(str)
+    assert isinstance(response, str)
 
 
 def test_get_summoner_by_summoner_id():
     riot = Xayah.RiotAPI(get_api_key())
     response = riot.get_summoner_by_summoner_id(summoner_id, region)
-    print(response)
-    assert response.isinstance(str)
+    assert isinstance(response, str)
 
 
 def test_get_server_status():
     riot = Xayah.RiotAPI(get_api_key())
     response = riot.get_server_status(region)
-    assert response.isinstance(str)
+    assert isinstance(response, str)
