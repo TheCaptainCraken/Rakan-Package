@@ -34,7 +34,7 @@ class RiotAPI:
             case 503:
                 raise LowLevelErrors.ServiceUnavailable
             case 200:
-                return response.json()
+                return str(response.json())
             case _:
                 raise LowLevelErrors.UnknowError
 
@@ -184,4 +184,4 @@ class MMR_API:
     def get_summoner_mmr_info(self, region: str, summoner_name: str):
         url = f'https://{region}.whatismymmr.com/api/v1/summoner?name={summoner_name}'
         response = requests.get(url)
-        return response
+        return str(response.json())
