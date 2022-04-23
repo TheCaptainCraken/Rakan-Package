@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>rakan.Xayah &mdash; rakan 0.0.9 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> rakan
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <!-- Local TOC -->
+              <div class="local-toc"></div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">rakan</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+      <li>rakan.Xayah</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for rakan.Xayah</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">platform</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">LowLevelErrors</span>
+
+
+<div class="viewcode-block" id="RiotAPI"><a class="viewcode-back" href="../../rakan.html#rakan.Xayah.RiotAPI">[docs]</a><span class="k">class</span> <span class="nc">RiotAPI</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Class intended to handle the Riot Games Devloper API&quot;&quot;&quot;</span>
+    <span class="n">api_token</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="sd">&quot;&quot;&quot;API token given by Riot Games.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">api_token</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">api_token</span> <span class="o">=</span> <span class="n">api_token</span>
+
+<div class="viewcode-block" id="RiotAPI.make_request"><a class="viewcode-back" href="../../rakan.html#rakan.Xayah.RiotAPI.make_request">[docs]</a>    <span class="k">def</span> <span class="nf">make_request</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">url</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">header_data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;X-Riot-Token&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">api_token</span>
+        <span class="p">}</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">header_data</span><span class="p">)</span>
+        <span class="k">match</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">)):</span>
+            <span class="k">case</span> <span class="mi">400</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">LowLevelErrors</span><span class="o">.</span><span class="n">BadRequest</span>
+            <span class="k">case</span> <span class="mi">401</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">LowLevelErrors</span><span class="o">.</span><span class="n">Unauthorized</span>
+            <span class="k">case</span> <span class="mi">403</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">LowLevelErrors</span><span class="o">.</span><span class="n">Forbidden</span>
+            <span class="k">case</span> <span class="mi">404</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">LowLevelErrors</span><span class="o">.</span><span class="n">NotFound</span>
+            <span class="k">case</span> <span class="mi">415</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">LowLevelErrors</span><span class="o">.</span><span class="n">UnsupportedMediaType</span>
+            <span class="k">case</span> <span class="mi">429</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">LowLevelErrors</span><span class="o">.</span><span class="n">RateLimiExceeded</span>
+            <span class="k">case</span> <span class="mi">500</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">LowLevelErrors</span><span class="o">.</span><span class="n">InternalServerError</span>
+            <span class="k">case</span> <span class="mi">503</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">LowLevelErrors</span><span class="o">.</span><span class="n">ServiceUnavailable</span>
+            <span class="k">case</span> <span class="mi">200</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+            <span class="k">case</span> <span class="k">_</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">LowLevelErrors</span><span class="o">.</span><span class="n">UnknowError</span></div>
+
+<div class="viewcode-block" id="RiotAPI.get_matches_by_puuid"><a class="viewcode-back" href="../../rakan.html#rakan.Xayah.RiotAPI.get_matches_by_puuid">[docs]</a>    <span class="k">def</span> <span class="nf">get_matches_by_puuid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">region</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">puuid</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">start_time</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">end_time</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">queque</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">start</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">count</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;https://</span><span class="si">{</span><span class="n">region</span><span class="si">}</span><span class="s1">.api.riotgames.com/lol/match/v5/matches/by-puuid/</span><span class="si">{</span><span class="n">puuid</span><span class="si">}</span><span class="s1">/ids?startTime=</span><span class="si">{</span><span class="n">start_time</span><span class="si">}</span><span class="s1">&amp;endTime=</span><span class="si">{</span><span class="n">end_time</span><span class="si">}</span><span class="s1">&amp;queue=</span><span class="si">{</span><span class="n">queque</span><span class="si">}</span><span class="s1">&amp;type=</span><span class="si">{</span><span class="nb">type</span><span class="si">}</span><span class="s1">&amp;start=</span><span class="si">{</span><span class="n">start</span><span class="si">}</span><span class="s1">&amp;count=</span><span class="si">{</span><span class="n">count</span><span class="si">}</span><span class="s1">&#39;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_request</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="RiotAPI.get_matches_by_match_id"><a class="viewcode-back" href="../../rakan.html#rakan.Xayah.RiotAPI.get_matches_by_match_id">[docs]</a>    <span class="k">def</span> <span class="nf">get_matches_by_match_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">region</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">match_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;https://</span><span class="si">{</span><span class="n">region</span><span class="si">}</span><span class="s1">.api.riotgames.com/lol/match/v5/matches/</span><span class="si">{</span><span class="n">match_id</span><span class="si">}</span><span class="s1">&#39;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_request</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="RiotAPI.get_match_timeline_by_match_id"><a class="viewcode-back" href="../../rakan.html#rakan.Xayah.RiotAPI.get_match_timeline_by_match_id">[docs]</a>    <span class="k">def</span> <span class="nf">get_match_timeline_by_match_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">region</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">match_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;https://</span><span class="si">{</span><span class="n">region</span><span class="si">}</span><span class="s1">.api.riotgames.com/lol/match/v5/matches/</span><span class="si">{</span><span class="n">match_id</span><span class="si">}</span><span class="s1">/timeline&#39;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_request</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="RiotAPI.get_champion_mastery_by_summoner_id"><a class="viewcode-back" href="../../rakan.html#rakan.Xayah.RiotAPI.get_champion_mastery_by_summoner_id">[docs]</a>    <span class="k">def</span> <span class="nf">get_champion_mastery_by_summoner_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">summoner_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">region</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;https://</span><span class="si">{</span><span class="n">region</span><span class="si">}</span><span class="s1">.api.riotgames.com/lol/champion-mastery/v4/champion-masteries/by-summoner/</span><span class="si">{</span><span class="n">summoner_id</span><span class="si">}</span><span class="s1">&#39;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_request</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="RiotAPI.get_champion_mastery_by_summoner_id_and_champion_id"><a class="viewcode-back" href="../../rakan.html#rakan.Xayah.RiotAPI.get_champion_mastery_by_summoner_id_and_champion_id">[docs]</a>    <span class="k">def</span> <span class="nf">get_champion_mastery_by_summoner_id_and_champion_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">summoner_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">champion_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">region</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;https://</span><span class="si">{</span><span class="n">region</span><span class="si">}</span><span class="s1">.api.riotgames.com/lol/champion-mastery/v4/champion-masteries/by-summoner/</span><span class="si">{</span><span class="n">summoner_id</span><span class="si">}</span><span class="s1">/by-champion/</span><span class="si">{</span><span class="n">champion_id</span><span class="si">}</span><span class="s1">&#39;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_request</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="RiotAPI.get_summoner_mastery_score"><a class="viewcode-back" href="../../rakan.html#rakan.Xayah.RiotAPI.get_summoner_mastery_score">[docs]</a>    <span class="k">def</span> <span class="nf">get_summoner_mastery_score</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">summoner_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">region</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;https://</span><span class="si">{</span><span class="n">region</span><span class="si">}</span><span class="s1">.api.riotgames.com/lol/champion-mastery/v4/scores/by-summoner/</span><span class="si">{</span><span class="n">summoner_id</span><span class="si">}</span><span class="s1">&#39;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_request</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="RiotAPI.get_champion_rotation"><a class="viewcode-back" href="../../rakan.html#rakan.Xayah.RiotAPI.get_champion_rotation">[docs]</a>    <span class="k">def</span> <span class="nf">get_champion_rotation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">region</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;https://</span><span class="si">{</span><span class="n">region</span><span class="si">}</span><span class="s1">.api.riotgames.com/lol/platform/v3/champion-rotations&#39;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_request</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="RiotAPI.get_challenger_league"><a class="viewcode-back" href="../../rakan.html#rakan.Xayah.RiotAPI.get_challenger_league">[docs]</a>    <span class="k">def</span> <span class="nf">get_challenger_league</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">queque</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">region</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;https://</span><span class="si">{</span><span class="n">region</span><span class="si">}</span><span class="s1">.api.riotgames.com/lol/league/v4/challengerleagues/by-queue/</span><span class="si">{</span><span class="n">queque</span><span class="si">}</span><span class="s1">&#39;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_request</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="RiotAPI.get_grandmaster_league"><a class="viewcode-back" href="../../rakan.html#rakan.Xayah.RiotAPI.get_grandmaster_league">[docs]</a>    <span class="k">def</span> <span class="nf">get_grandmaster_league</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">queque</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">region</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;https://</span><span class="si">{</span><span class="n">region</span><span class="si">}</span><span class="s1">.api.riotgames.com/lol/league/v4/grandmasterleagues/by-queue/</span><span class="si">{</span><span class="n">queque</span><span class="si">}</span><span class="s1">&#39;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_request</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="RiotAPI.get_master_league"><a class="viewcode-back" href="../../rakan.html#rakan.Xayah.RiotAPI.get_master_league">[docs]</a>    <span class="k">def</span> <span class="nf">get_master_league</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">queque</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">region</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;https://</span><span class="si">{</span><span class="n">region</span><span class="si">}</span><span class="s1">.api.riotgames.com/lol/league/v4/masterleagues/by-queue/</span><span class="si">{</span><span class="n">queque</span><span class="si">}</span><span class="s1">&#39;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_request</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="RiotAPI.get_all_ranked_stats_by_summoner_id"><a class="viewcode-back" href="../../rakan.html#rakan.Xayah.RiotAPI.get_all_ranked_stats_by_summoner_id">[docs]</a>    <span class="k">def</span> <span class="nf">get_all_ranked_stats_by_summoner_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">summoner_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">region</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;https://</span><span class="si">{</span><span class="n">region</span><span class="si">}</span><span class="s1">.api.riotgames.com/lol/league/v4/entries/by-summoner/</span><span class="si">{</span><span class="n">summoner_id</span><span class="si">}</span><span class="s1">&#39;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_request</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="RiotAPI.get_all_summoners_by_division_tier_queque"><a class="viewcode-back" href="../../rakan.html#rakan.Xayah.RiotAPI.get_all_summoners_by_division_tier_queque">[docs]</a>    <span class="k">def</span> <span class="nf">get_all_summoners_by_division_tier_queque</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">region</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">division</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">tier</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">queque</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">page</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;https://</span><span class="si">{</span><span class="n">region</span><span class="si">}</span><span class="s1">.api.riotgames.com/lol/league/v4/entries/</span><span class="si">{</span><span class="n">queque</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">tier</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">division</span><span class="si">}</span><span class="s1">?page=</span><span class="si">{</span><span class="n">page</span><span class="si">}</span><span class="s1">&#39;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_request</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="RiotAPI.get_server_status"><a class="viewcode-back" href="../../rakan.html#rakan.Xayah.RiotAPI.get_server_status">[docs]</a>    <span class="k">def</span> <span class="nf">get_server_status</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">region</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;https://</span><span class="si">{</span><span class="n">region</span><span class="si">}</span><span class="s1">.api.riotgames.com/lol/status/v4/platform-data&#39;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_request</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="RiotAPI.get_in_game_info_by_summoner_id"><a class="viewcode-back" href="../../rakan.html#rakan.Xayah.RiotAPI.get_in_game_info_by_summoner_id">[docs]</a>    <span class="k">def</span> <span class="nf">get_in_game_info_by_summoner_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">summoner_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">region</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;https://</span><span class="si">{</span><span class="n">region</span><span class="si">}</span><span class="s1">.api.riotgames.com/lol/spectator/v4/active-games/by-summoner/</span><span class="si">{</span><span class="n">summoner_id</span><span class="si">}</span><span class="s1">&#39;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_request</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="RiotAPI.get_summoner_by_summoner_id"><a class="viewcode-back" href="../../rakan.html#rakan.Xayah.RiotAPI.get_summoner_by_summoner_id">[docs]</a>    <span class="k">def</span> <span class="nf">get_summoner_by_summoner_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">summoner_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">region</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            A function that returns a JSON obj from [Riot Games API](https://developer.riotgames.com/apis#summoner-v4/GET_getBySummonerId) containing basic summoner information.\\</span>
+<span class="sd">            It can raise every error in the Errors module.</span>
+<span class="sd">            ### Arguments</span>
+<span class="sd">                - The summoner&#39;s ID. [ string ]</span>
+<span class="sd">                - The summoner&#39;s region. [ string ]</span>
+<span class="sd">            ### Output</span>
+<span class="sd">                Assuming no errors occured the function will return a json obj containing:</span>
+<span class="sd">                - The account ID. [ string ] { accountId }</span>
+<span class="sd">                - The profile icon ID. [ int ] { profileIconId }</span>
+<span class="sd">                - The date of the last time the account was modified in epoch milliseconds. [ int ] { revisionDate }</span>
+<span class="sd">                - The name of the summoner. [ sring ] { name }</span>
+<span class="sd">                - The summoner&#39;s ID. [ string ] { id }</span>
+<span class="sd">                - The summoner&#39;s PUUID. [ string ] { puuid }</span>
+<span class="sd">                - The summoner&#39;s level. [ int ] { summonerLevel }</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;https://</span><span class="si">{</span><span class="n">region</span><span class="si">}</span><span class="s1">.api.riotgames.com/lol/summoner/v4/summoners/</span><span class="si">{</span><span class="n">summoner_id</span><span class="si">}</span><span class="s1">&#39;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_request</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="RiotAPI.get_summoner_by_name"><a class="viewcode-back" href="../../rakan.html#rakan.Xayah.RiotAPI.get_summoner_by_name">[docs]</a>    <span class="k">def</span> <span class="nf">get_summoner_by_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">region</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            A function that returns a JSON obj from [Riot Games API](https://developer.riotgames.com/apis#summoner-v4/GET_getBySummonerName) containing basic summoner information.\\</span>
+<span class="sd">            It can raise every error in the Errors module.</span>
+<span class="sd">            ### Arguments</span>
+<span class="sd">                - The summoner&#39;s name. [ string ]</span>
+<span class="sd">                - The summoner&#39;s region. [ string ]</span>
+<span class="sd">            ### Output</span>
+<span class="sd">                Assuming no errors occured the function will return a json obj containing:</span>
+<span class="sd">                - The account ID. [ string ] { accountId }</span>
+<span class="sd">                - The profile icon ID. [ int ] { profileIconId }</span>
+<span class="sd">                - The date of the last time the account was modified in epoch milliseconds. [ int ] { revisionDate }</span>
+<span class="sd">                - The name of the summoner. [ sring ] { name }</span>
+<span class="sd">                - The summoner&#39;s ID. [ string ] { id }</span>
+<span class="sd">                - The summoner&#39;s PUUID. [ string ] { puuid }</span>
+<span class="sd">                - The summoner&#39;s level. [ int ] { summonerLevel }</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;https://</span><span class="si">{</span><span class="n">region</span><span class="si">}</span><span class="s1">.api.riotgames.com/lol/summoner/v4/summoners/by-name/</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">&#39;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_request</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="RiotAPI.get_summoner_by_puuid"><a class="viewcode-back" href="../../rakan.html#rakan.Xayah.RiotAPI.get_summoner_by_puuid">[docs]</a>    <span class="k">def</span> <span class="nf">get_summoner_by_puuid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">puuid</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">region</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            A function that returns a JSON obj from [Riot Games API](https://developer.riotgames.com/apis#summoner-v4/GET_getByPUUID) containing basic summoner information.\\</span>
+<span class="sd">            It can raise every error in the Errors module.</span>
+<span class="sd">            ### Arguments</span>
+<span class="sd">                - The summoner&#39;s PUUID. [ string ]</span>
+<span class="sd">                - The summoner&#39;s region. [ string ]</span>
+<span class="sd">            ### Output</span>
+<span class="sd">                Assuming no errors occured the function will return a json obj containing:</span>
+<span class="sd">                - The account ID. [ string ] { accountId }</span>
+<span class="sd">                - The profile icon ID. [ int ] { profileIconId }</span>
+<span class="sd">                - The date of the last time the account was modified in epoch milliseconds. [ int ] { revisionDate }</span>
+<span class="sd">                - The name of the summoner. [ sring ] { name }</span>
+<span class="sd">                - The summoner&#39;s ID. [ string ] { id }</span>
+<span class="sd">                - The summoner&#39;s PUUID. [ string ] { puuid }</span>
+<span class="sd">                - The summoner&#39;s level. [ int ] { summonerLevel }</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;https://</span><span class="si">{</span><span class="n">region</span><span class="si">}</span><span class="s1">.api.riotgames.com/lol/summoner/v4/summoners/by-puuid/</span><span class="si">{</span><span class="n">puuid</span><span class="si">}</span><span class="s1">&#39;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_request</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="RiotAPI.get_summoner_by_account_id"><a class="viewcode-back" href="../../rakan.html#rakan.Xayah.RiotAPI.get_summoner_by_account_id">[docs]</a>    <span class="k">def</span> <span class="nf">get_summoner_by_account_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">account_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">region</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            A function that returns a JSON obj from [Riot Games API](https://developer.riotgames.com/apis#summoner-v4/GET_getByAccountId) containing basic summoner information.\\</span>
+<span class="sd">            It can raise every error in the Errors module.</span>
+<span class="sd">            ### Arguments</span>
+<span class="sd">                - The summoner&#39;s account ID. [ string ]</span>
+<span class="sd">                - The summoner&#39;s region. [ string ]</span>
+<span class="sd">            ### Output</span>
+<span class="sd">                Assuming no errors occured the function will return a json obj containing:</span>
+<span class="sd">                - The account ID. [ string ] { accountId }</span>
+<span class="sd">                - The profile icon ID. [ int ] { profileIconId }</span>
+<span class="sd">                - The date of the last time the account was modified in epoch milliseconds. [ int ] { revisionDate }</span>
+<span class="sd">                - The name of the summoner. [ sring ] { name }</span>
+<span class="sd">                - The summoner&#39;s ID. [ string ] { id }</span>
+<span class="sd">                - The summoner&#39;s PUUID. [ string ] { puuid }</span>
+<span class="sd">                - The summoner&#39;s level. [ int ] { summonerLevel }</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;https://</span><span class="si">{</span><span class="n">region</span><span class="si">}</span><span class="s1">.api.riotgames.com/lol/summoner/v4/summoners/by-account/</span><span class="si">{</span><span class="n">account_id</span><span class="si">}</span><span class="s1">&#39;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_request</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="MMR_API"><a class="viewcode-back" href="../../rakan.html#rakan.Xayah.MMR_API">[docs]</a><span class="k">class</span> <span class="nc">MMR_API</span><span class="p">:</span>
+    <span class="n">user_agent_string</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">platform</span><span class="o">.</span><span class="n">system</span><span class="p">()</span><span class="si">}</span><span class="s1">:rakan_python_package:0.0.8&#39;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">pass</span>
+
+<div class="viewcode-block" id="MMR_API.get_summoner_mmr_info"><a class="viewcode-back" href="../../rakan.html#rakan.Xayah.MMR_API.get_summoner_mmr_info">[docs]</a>    <span class="k">def</span> <span class="nf">get_summoner_mmr_info</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">region</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">summoner_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;https://</span><span class="si">{</span><span class="n">region</span><span class="si">}</span><span class="s1">.whatismymmr.com/api/v1/summoner?name=</span><span class="si">{</span><span class="n">summoner_name</span><span class="si">}</span><span class="s1">&#39;</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">response</span></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Pietro Agnoli.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
