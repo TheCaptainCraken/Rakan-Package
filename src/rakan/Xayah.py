@@ -1,5 +1,6 @@
 import platform
 import requests
+import json
 from . import LowLevelErrors
 
 
@@ -34,7 +35,7 @@ class RiotAPI:
             case 503:
                 raise LowLevelErrors.ServiceUnavailable
             case 200:
-                return str(response.json())
+                return json.dumps(response.json())
             case _:
                 raise LowLevelErrors.UnknowError
 
@@ -155,21 +156,20 @@ class RiotAPI:
         return self.make_request(url=url)
 
     def get_summoner_by_account_id(self, account_id: str, region: str):
-        """
-            A function that returns a JSON obj from [Riot Games API](https://developer.riotgames.com/apis#summoner-v4/GET_getByAccountId) containing basic summoner information.\\
-            It can raise every error in the Errors module.
-            ### Arguments
-                - The summoner's account ID. [ string ]
-                - The summoner's region. [ string ]
-            ### Output
-                Assuming no errors occured the function will return a json obj containing:
-                - The account ID. [ string ] { accountId }
-                - The profile icon ID. [ int ] { profileIconId }
-                - The date of the last time the account was modified in epoch milliseconds. [ int ] { revisionDate }
-                - The name of the summoner. [ sring ] { name }
-                - The summoner's ID. [ string ] { id }
-                - The summoner's PUUID. [ string ] { puuid }
-                - The summoner's level. [ int ] { summonerLevel }
+        """A function that returns a JSON obj from [Riot Games API](https://developer.riotgames.com/apis#summoner-v4/GET_getByAccountId) containing basic summoner information.\\
+        It can raise every error in the Errors module.
+        Arguments
+            - The summoner's account ID. [ string ]
+            - The summoner's region. [ string ]
+        ### Output
+            Assuming no errors occured the function will return a json obj containing:
+            - The account ID. [ string ] { accountId }
+            - The profile icon ID. [ int ] { profileIconId }
+            - The date of the last time the account was modified in epoch milliseconds. [ int ] { revisionDate }
+            - The name of the summoner. [ sring ] { name }
+            - The summoner's ID. [ string ] { id }
+            - The summoner's PUUID. [ string ] { puuid }
+            - The summoner's level. [ int ] { summonerLevel }
         """
         url = f'https://{region}.api.riotgames.com/lol/summoner/v4/summoners/by-account/{account_id}'
         return self.make_request(url=url)
@@ -184,4 +184,4 @@ class MMR_API:
     def get_summoner_mmr_info(self, region: str, summoner_name: str):
         url = f'https://{region}.whatismymmr.com/api/v1/summoner?name={summoner_name}'
         response = requests.get(url)
-        return str(response.json())
+        return json.dumps(response.json())
