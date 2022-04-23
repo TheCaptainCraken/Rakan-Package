@@ -9,7 +9,7 @@ puuid = 'ONLVZymFvyfRzVC9wWqlD5sYeQ_ehIL99WScZ3e2J83VmqbaLisCJ3tn6JOSPo4UI4j3P2F
 
 
 def get_api_key():
-    return os.environ['RIOT_API_KEY']
+    return os.environ.get('RIOT_API_KEY')
 
 
 def test_get_champion_mastery_by_summoner_id():
