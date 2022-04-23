@@ -1,5 +1,6 @@
-"""The Xayah module interacts with the part of the [Riot Developer API](https://developer.riotgames.com/apis) related to [League of Legends](https://www.leagueoflegends.com/) at a very low level of abstraction.
+"""The Xayah module interacts with the part of the [Riot Developer API](https://developer.riotgames.com/apis).
 
+Xayah does this at a very low level of abstraction.
 This module is part of the [rakan package](https://pypi.org/project/rakan/) wich uses Xayah to do some analysis.
 """
 
@@ -24,11 +25,11 @@ class RiotAPI:
     def __make_request(self, url: str):
         """Makes a request to the Riot Developer API.
 
-        Makes a request to the Riot Developer API using the api token and then returns a JSON 
+        Makes a request to the Riot Developer API using the api token and then returns a JSON
         formatted string of the result.
 
         Args:
-            url: The url against wich the request will be issued. String.
+            url (string): The url against wich the request will be issued.
 
         Returns:
             A JSON formatted string containing the body of the response from the Riot Developer API.
