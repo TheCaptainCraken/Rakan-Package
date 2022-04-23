@@ -48,6 +48,7 @@ class RiotAPI:
 
     def get_match_timeline_by_match_id(self, region: str, match_id: str):
         url = f'https://{region}.api.riotgames.com/lol/match/v5/matches/{match_id}/timeline'
+        return self.make_request(url=url)
 
     def get_champion_mastery_by_summoner_id(self, summoner_id: str, region: str):
         url = f'https://{region}.api.riotgames.com/lol/champion-mastery/v4/champion-masteries/by-summoner/{summoner_id}'
