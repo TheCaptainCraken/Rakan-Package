@@ -38,6 +38,17 @@ class RiotAPI:
             case _:
                 raise LowLevelErrors.UnknowError
 
+    def get_matches_by_puuid(self, region: str, puuid: str, start_time: int, end_time: int, queque: int, type: str, start: int, count: int):
+        url = f'https://{region}.api.riotgames.com/lol/match/v5/matches/by-puuid/{puuid}/ids?startTime={start_time}&endTime={end_time}&queue={queque}&type={type}&start={start}&count={count}'
+        return self.make_request(url=url)
+
+    def get_matches_by_match_id(self, region: str, match_id: str):
+        url = f'https://{region}.api.riotgames.com/lol/match/v5/matches/{match_id}'
+        return self.make_request(url=url)
+
+    def get_match_timeline_by_match_id(self, region: str, match_id: str):
+        url = f'https://{region}.api.riotgames.com/lol/match/v5/matches/{match_id}/timeline'
+
     def get_champion_mastery_by_summoner_id(self, summoner_id: str, region: str):
         url = f'https://{region}.api.riotgames.com/lol/champion-mastery/v4/champion-masteries/by-summoner/{summoner_id}'
         return self.make_request(url=url)
