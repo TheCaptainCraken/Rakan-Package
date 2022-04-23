@@ -5,4 +5,7 @@
 /dist/
 
 # Python egg metadata, regenerated from source files by setuptools.
-src/*.egg-info/
+src/*.egg-info
+
+#apikey for Riot Games API
+tests/api_key.txt
