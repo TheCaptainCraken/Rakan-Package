@@ -176,7 +176,7 @@ class RiotAPI:
 
 
 class MMR_API:
-    user_agent_string = f'{platform.system()}:rakan_python_package:0.0.7'
+    user_agent_string = f'{platform.system()}:rakan_python_package:0.0.8'
 
     def __init__(self) -> None:
         pass
@@ -184,4 +184,4 @@ class MMR_API:
     def get_summoner_mmr_info(self, region: str, summoner_name: str):
         url = f'https://{region}.whatismymmr.com/api/v1/summoner?name={summoner_name}'
         response = requests.get(url)
-        print(response.json())
+        return response
