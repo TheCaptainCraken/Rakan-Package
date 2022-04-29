@@ -9,3 +9,5 @@ src/*.egg-info
 
 #apikey for Riot Games API
 tests/api_key.txt
+
+tests/trial_and_error.py

@@ -1,4 +1,5 @@
 from src.rakan import Xayah
+from src.rakan import GameCostants
 import os
 
 account = 'cr4k3nv4gh3n'
@@ -14,35 +15,35 @@ def get_api_key():
 
 def test_get_champion_mastery_by_summoner_id():
     riot = Xayah.RiotAPI(get_api_key())
-    response = riot.get_champion_mastery_by_summoner_id(summoner_id, region)
+    response = riot.get_champion_mastery_by_summoner_id(summoner_id, GameCostants.ServerRegion.EUW)
     assert isinstance(response, str)
 
 
 def test_get_summoner_by_account_id():
     riot = Xayah.RiotAPI(get_api_key())
-    response = riot.get_summoner_by_account_id(account_id, region)
+    response = riot.get_summoner_by_account_id(account_id, GameCostants.ServerRegion.EUW)
     assert isinstance(response, str)
 
 
 def test_get_summoner_by_puuid():
     riot = Xayah.RiotAPI(get_api_key())
-    response = riot.get_summoner_by_puuid(puuid, region)
+    response = riot.get_summoner_by_puuid(puuid, GameCostants.ServerRegion.EUW)
     assert isinstance(response, str)
 
 
 def test_get_summoner_by_name():
     riot = Xayah.RiotAPI(get_api_key())
-    response = riot.get_summoner_by_name(account, region)
+    response = riot.get_summoner_by_name(account, GameCostants.ServerRegion.EUW)
     assert isinstance(response, str)
 
 
 def test_get_summoner_by_summoner_id():
     riot = Xayah.RiotAPI(get_api_key())
-    response = riot.get_summoner_by_summoner_id(summoner_id, region)
+    response = riot.get_summoner_by_summoner_id(summoner_id, GameCostants.ServerRegion.EUW)
     assert isinstance(response, str)
 
 
 def test_get_server_status():
     riot = Xayah.RiotAPI(get_api_key())
-    response = riot.get_server_status(region)
+    response = riot.get_server_status(GameCostants.ServerRegion.EUW)
     assert isinstance(response, str)

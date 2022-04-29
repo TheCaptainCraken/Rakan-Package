@@ -1,56 +1,19 @@
-"""The Xayah module interacts with the part of the [Riot Developer API](https://developer.riotgames.com/apis).
-
-Xayah does this at a very low level of abstraction.
-This module is part of the [rakan package](https://pypi.org/project/rakan/) wich uses Xayah to do some analysis.
-"""
-
 import platform
 import requests
 import json
 from . import LowLevelErrors
+from . import GameCostants
 
 
 class RiotAPI:
-    """This class handles the Riot Games API for the Xayah module.
-
-    Attributes:
-        api_token: API token given by Riot Games.
-    """
-    api_token: str
+    __api_token: str
 
     def __init__(self, api_token: str) -> None:
-        """Initializes the RiotAPI class and sets the api token."""
-        self.api_token = api_token
+        self.__api_token = api_token
 
     def __make_request(self, url: str):
-        """Makes a request to the Riot Developer API.
-
-        Makes a request to the Riot Developer API using the api token and then returns a JSON
-        formatted string of the result.
-
-        Args:
-            url (string): The url against wich the request will be issued.
-
-        Returns:
-            A JSON formatted string containing the body of the response from the Riot Developer API.
-            example:
-
-                {"id": "EUW1","name": "EU West","locales": ["de_DE","en_GB","es_ES","fr_FR","it_IT"],"maintenances": [],"incidents": []}
-
-                The returned string will always be one line and minified.
-
-        Raises:
-            LowLevelErrors.BadRequest: The url is porbably wrongly formatted.
-            LowLevelErrors.Unauthorized: The api token is probably invalid.
-            LowLevelErrors.Forbidden: The api token does not have permission to make that request.
-            LowLevelErrors.NotFound: The url is fomratted correctly but the request makes no sense.
-            LowLevelErrors.UnsupportedMediaType: Only text is accepted.
-            LowLevelErrors.RateLimiExceeded: Too many requests from the api token.
-            LowLevelErrors.InternalServerError: Server stopped working.
-            LowLevelErrors.ServiceUnavailable: Server offline.
-        """
         header_data = {
-            'X-Riot-Token': self.api_token
+            'X-Riot-Token': self.__api_token
         }
         response = requests.get(url=url, headers=header_data)
         match(int(response.status_code)):
@@ -75,76 +38,76 @@ class RiotAPI:
             case _:
                 raise LowLevelErrors.UnknowError
 
-    def get_matches_by_puuid(self, region: str, puuid: str, start_time: int, end_time: int, queque: int, type: str, start: int, count: int):
-        url = f'https://{region}.api.riotgames.com/lol/match/v5/matches/by-puuid/{puuid}/ids?startTime={start_time}&endTime={end_time}&queue={queque}&type={type}&start={start}&count={count}'
+    def get_matches_by_puuid(self, continent: GameCostants.ServerContinent, puuid: str, start_time: int, end_time: int, game_type: GameCostants.GameType, start: int = 0, count: int = 20):
+        url = f'https://{continent.value}.api.riotgames.com/lol/match/v5/matches/by-puuid/{puuid}/ids?startTime={start_time}&endTime={end_time}&type={game_type.value}&start={start}&count={count}'
         return self.__make_request(url=url)
 
-    def get_match_by_match_id(self, region: str, match_id: str):
-        url = f'https://{region}.api.riotgames.com/lol/match/v5/matches/{match_id}'
+    def get_match_by_match_id(self, continent: GameCostants.ServerContinent, match_id: str):
+        url = f'https://{continent.value}.api.riotgames.com/lol/match/v5/matches/{match_id}'
         return self.__make_request(url=url)
 
-    def get_match_timeline_by_match_id(self, region: str, match_id: str):
-        url = f'https://{region}.api.riotgames.com/lol/match/v5/matches/{match_id}/timeline'
+    def get_match_timeline_by_match_id(self, continent: GameCostants.ServerContinent, match_id: str):
+        url = f'https://{continent.value}.api.riotgames.com/lol/match/v5/matches/{match_id}/timeline'
         return self.__make_request(url=url)
 
     def get_champion_mastery_by_summoner_id(self, summoner_id: str, region: str):
         url = f'https://{region}.api.riotgames.com/lol/champion-mastery/v4/champion-masteries/by-summoner/{summoner_id}'
         return self.__make_request(url=url)
 
-    def get_champion_mastery_by_summoner_id_and_champion_id(self, summoner_id: str, champion_id: int, region: str):
-        url = f'https://{region}.api.riotgames.com/lol/champion-mastery/v4/champion-masteries/by-summoner/{summoner_id}/by-champion/{champion_id}'
+    def get_champion_mastery_by_summoner_id_and_champion_id(self, summoner_id: str, champion_id: int, region: GameCostants.ServerRegion):
+        url = f'https://{region.value}.api.riotgames.com/lol/champion-mastery/v4/champion-masteries/by-summoner/{summoner_id}/by-champion/{champion_id}'
         return self.__make_request(url=url)
 
-    def get_summoner_mastery_score(self, summoner_id: str, region: str):
-        url = f'https://{region}.api.riotgames.com/lol/champion-mastery/v4/scores/by-summoner/{summoner_id}'
+    def get_summoner_mastery_score(self, summoner_id: str, region: GameCostants.ServerRegion):
+        url = f'https://{region.value}.api.riotgames.com/lol/champion-mastery/v4/scores/by-summoner/{summoner_id}'
         return self.__make_request(url=url)
 
-    def get_champion_rotation(self, region: str):
-        url = f'https://{region}.api.riotgames.com/lol/platform/v3/champion-rotations'
+    def get_champion_rotation(self, region: GameCostants.ServerRegion):
+        url = f'https://{region.value}.api.riotgames.com/lol/platform/v3/champion-rotations'
         return self.__make_request(url=url)
 
-    def get_challenger_league(self, queque: str, region: str):
-        url = f'https://{region}.api.riotgames.com/lol/league/v4/challengerleagues/by-queue/{queque}'
+    def get_challenger_league(self, queque: GameCostants.Queque, region: GameCostants.ServerRegion):
+        url = f'https://{region.value}.api.riotgames.com/lol/league/v4/challengerleagues/by-queue/{queque.value}'
         return self.__make_request(url=url)
 
-    def get_grandmaster_league(self, queque: str, region: str):
-        url = f'https://{region}.api.riotgames.com/lol/league/v4/grandmasterleagues/by-queue/{queque}'
+    def get_grandmaster_league(self, queque: GameCostants.Queque, region: GameCostants.ServerRegion):
+        url = f'https://{region.value}.api.riotgames.com/lol/league/v4/grandmasterleagues/by-queue/{queque.value}'
         return self.__make_request(url=url)
 
-    def get_master_league(self, queque: str, region: str):
-        url = f'https://{region}.api.riotgames.com/lol/league/v4/masterleagues/by-queue/{queque}'
+    def get_master_league(self, queque: GameCostants.Queque, region: GameCostants.ServerRegion):
+        url = f'https://{region.value}.api.riotgames.com/lol/league/v4/masterleagues/by-queue/{queque.value}'
         return self.__make_request(url=url)
 
-    def get_all_ranked_stats_by_summoner_id(self, summoner_id: str, region: str):
-        url = f'https://{region}.api.riotgames.com/lol/league/v4/entries/by-summoner/{summoner_id}'
+    def get_all_ranked_stats_by_summoner_id(self, summoner_id: str, region: GameCostants.ServerRegion):
+        url = f'https://{region.value}.api.riotgames.com/lol/league/v4/entries/by-summoner/{summoner_id}'
         return self.__make_request(url=url)
 
-    def get_all_summoners_by_division_tier_queque(self, region: str, division: str, tier: str, queque: str, page: int = 1):
-        url = f'https://{region}.api.riotgames.com/lol/league/v4/entries/{queque}/{tier}/{division}?page={page}'
+    def get_all_summoners_by_division_tier_queque(self, region: GameCostants.ServerRegion, division: GameCostants.Division, tier: GameCostants.Tier, queque: GameCostants.Queque, page: int = 1):
+        url = f'https://{region.value}.api.riotgames.com/lol/league/v4/entries/{queque.value}/{tier.value}/{division.value}?page={page}'
         return self.__make_request(url=url)
 
-    def get_server_status(self, region: str):
-        url = f'https://{region}.api.riotgames.com/lol/status/v4/platform-data'
+    def get_server_status(self, region: GameCostants.ServerRegion):
+        url = f'https://{region.value}.api.riotgames.com/lol/status/v4/platform-data'
         return self.__make_request(url=url)
 
-    def get_in_game_info_by_summoner_id(self, summoner_id: str, region: str):
-        url = f'https://{region}.api.riotgames.com/lol/spectator/v4/active-games/by-summoner/{summoner_id}'
+    def get_in_game_info_by_summoner_id(self, summoner_id: str, region: GameCostants.ServerRegion):
+        url = f'https://{region.value}.api.riotgames.com/lol/spectator/v4/active-games/by-summoner/{summoner_id}'
         return self.__make_request(url=url)
 
-    def get_summoner_by_summoner_id(self, summoner_id: str, region: str):
-        url = f'https://{region}.api.riotgames.com/lol/summoner/v4/summoners/{summoner_id}'
+    def get_summoner_by_summoner_id(self, summoner_id: str, region: GameCostants.ServerRegion):
+        url = f'https://{region.value}.api.riotgames.com/lol/summoner/v4/summoners/{summoner_id}'
         return self.__make_request(url=url)
 
-    def get_summoner_by_name(self, name: str, region: str):
-        url = f'https://{region}.api.riotgames.com/lol/summoner/v4/summoners/by-name/{name}'
+    def get_summoner_by_name(self, name: str, region: GameCostants.ServerRegion):
+        url = f'https://{region.value}.api.riotgames.com/lol/summoner/v4/summoners/by-name/{name}'
         return self.__make_request(url=url)
 
-    def get_summoner_by_puuid(self, puuid: str, region: str):
-        url = f'https://{region}.api.riotgames.com/lol/summoner/v4/summoners/by-puuid/{puuid}'
+    def get_summoner_by_puuid(self, puuid: str, region: GameCostants.ServerRegion):
+        url = f'https://{region.value}.api.riotgames.com/lol/summoner/v4/summoners/by-puuid/{puuid}'
         return self.__make_request(url=url)
 
-    def get_summoner_by_account_id(self, account_id: str, region: str):
-        url = f'https://{region}.api.riotgames.com/lol/summoner/v4/summoners/by-account/{account_id}'
+    def get_summoner_by_account_id(self, account_id: str, region: GameCostants.ServerRegion):
+        url = f'https://{region.value}.api.riotgames.com/lol/summoner/v4/summoners/by-account/{account_id}'
         return self.__make_request(url=url)
 
 
@@ -154,7 +117,7 @@ class MMR_API:
     def __init__(self) -> None:
         pass
 
-    def get_summoner_mmr_info(self, region: str, summoner_name: str):
-        url = f'https://{region}.whatismymmr.com/api/v1/summoner?name={summoner_name}'
+    def get_summoner_mmr_info(self, region: GameCostants.ServerRegion, summoner_name: str):
+        url = f'https://{region.value}.whatismymmr.com/api/v1/summoner?name={summoner_name}'
         response = requests.get(url)
         return json.dumps(response.json())
