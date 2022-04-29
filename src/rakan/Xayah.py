@@ -50,8 +50,8 @@ class RiotAPI:
         url = f'https://{continent.value}.api.riotgames.com/lol/match/v5/matches/{match_id}/timeline'
         return self.__make_request(url=url)
 
-    def get_champion_mastery_by_summoner_id(self, summoner_id: str, region: str):
-        url = f'https://{region}.api.riotgames.com/lol/champion-mastery/v4/champion-masteries/by-summoner/{summoner_id}'
+    def get_champion_mastery_by_summoner_id(self, summoner_id: str, region: GameCostants.ServerRegion):
+        url = f'https://{region.value}.api.riotgames.com/lol/champion-mastery/v4/champion-masteries/by-summoner/{summoner_id}'
         return self.__make_request(url=url)
 
     def get_champion_mastery_by_summoner_id_and_champion_id(self, summoner_id: str, champion_id: int, region: GameCostants.ServerRegion):
