@@ -65,13 +65,13 @@ class Tier(Enum):
 
 class Division(Enum):
     """Enumation of all the ranks in League of Legends"""
-    I = 'I'
+    ONE = 'I'
     """1"""
-    II = 'II'
+    TWO = 'II'
     """2"""
-    III = 'III'
+    THREE = 'III'
     """3"""
-    IV = 'IV'
+    FOUR = 'IV'
     """4"""
 
 

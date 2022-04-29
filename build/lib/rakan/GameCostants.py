@@ -50,9 +50,39 @@ class Seasons(Enum):
     SEASON_9 = 13
 
 
-class Queques(Enum):
-    SNOWDOWN_SHOWDOWN_1VS1_GAMES = 72
+class Tier(Enum):
+    """Enumation of all the tiers in League of Legends"""
+    IRON = 'IRON'
+    BRONZE = 'BRONZE'
+    SILVER = 'SILVER'
+    GOLD = 'GOLD'
+    PLATINUM = 'PLATINUM'
+    DIAMON = 'DIAMOND'
+    MASTER = 'MASTER'
+    GANDMASTER = 'GRANDMASTER'
+    CHALLENGER = 'CHALLENGER'
 
-    SNOWDOWN_SHOWDOWN_2VS2_GAMES = 73
 
-    HEXAKILL_GAMES = 75
+class Division(Enum):
+    """Enumation of all the ranks in League of Legends"""
+    ONE = 'I'
+    """1"""
+    TWO = 'II'
+    """2"""
+    THREE = 'III'
+    """3"""
+    FOUR = 'IV'
+    """4"""
+
+
+class Queque(Enum):
+    SOLO = 'RANKED_SOLO_5x5'
+    FLEX_SR = 'RANKED_FLEX_SR'
+    FLEX_TT = 'RANKED_FLEX_TT'
+
+
+class GameType(Enum):
+    RANKED = 'ranked'
+    NORMAL = 'normal'
+    TOURNEY = 'tourney'
+    TUTORIAL = 'tutorial'
