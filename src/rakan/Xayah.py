@@ -112,7 +112,7 @@ class RiotAPI:
 
 
 class MMR_API:
-    user_agent_string = f'{platform.system()}:rakan_python_package:0.0.9'
+    user_agent_string = f'{platform.system()}:rakan_python_package:0.0.10'
 
     def __init__(self) -> None:
         pass

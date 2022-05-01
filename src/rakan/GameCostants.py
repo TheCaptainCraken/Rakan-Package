@@ -28,12 +28,16 @@ class ServerRegion(Enum):
 
 
 class ServerContinent(Enum):
+    """Enumation of all the continental regions of League of Legends.
+    This are groups of standard regions.
+    """
     AMERICAS = 'americas'
     ASIA = 'asia'
     EUROPE = 'europe'
 
 
 class Seasons(Enum):
+    """Enumation of all the seasons in League of Legends."""
     PRESEASON_3 = 0
     SEASON_3 = 1
     PRESEASON_4 = 2
@@ -51,7 +55,7 @@ class Seasons(Enum):
 
 
 class Tier(Enum):
-    """Enumation of all the tiers in League of Legends"""
+    """Enumation of all the tiers in League of Legends."""
     IRON = 'IRON'
     BRONZE = 'BRONZE'
     SILVER = 'SILVER'
@@ -64,7 +68,7 @@ class Tier(Enum):
 
 
 class Division(Enum):
-    """Enumation of all the ranks in League of Legends"""
+    """Enumation of all the ranks in League of Legends."""
     ONE = 'I'
     """1"""
     TWO = 'II'
@@ -76,12 +80,14 @@ class Division(Enum):
 
 
 class Queque(Enum):
+    """Enumaton of all the queques."""
     SOLO = 'RANKED_SOLO_5x5'
     FLEX_SR = 'RANKED_FLEX_SR'
     FLEX_TT = 'RANKED_FLEX_TT'
 
 
 class GameType(Enum):
+    """Enumation of all the game types."""
     RANKED = 'ranked'
     NORMAL = 'normal'
     TOURNEY = 'tourney'
