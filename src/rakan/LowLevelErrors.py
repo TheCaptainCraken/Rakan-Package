@@ -41,3 +41,8 @@ class ServiceUnavailable(Exception):
 class UnknowError(Exception):
     def __init__(self, message='I have no clue of what happened. You\'re fucked.') -> None:
         super().__init__(message)
+
+
+class NoMMRData(Exception):
+    def __init__(self, message='No recent MMR data is available.') -> None:
+        super().__init__(message)

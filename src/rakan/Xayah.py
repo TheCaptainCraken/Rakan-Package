@@ -66,15 +66,15 @@ class RiotAPI:
         url = f'https://{region.value}.api.riotgames.com/lol/platform/v3/champion-rotations'
         return self.__make_request(url=url)
 
-    def get_challenger_league(self, queque: GameCostants.Queque, region: GameCostants.ServerRegion):
+    def get_challenger_league(self, queque: GameCostants.Queue, region: GameCostants.ServerRegion):
         url = f'https://{region.value}.api.riotgames.com/lol/league/v4/challengerleagues/by-queue/{queque.value}'
         return self.__make_request(url=url)
 
-    def get_grandmaster_league(self, queque: GameCostants.Queque, region: GameCostants.ServerRegion):
+    def get_grandmaster_league(self, queque: GameCostants.Queue, region: GameCostants.ServerRegion):
         url = f'https://{region.value}.api.riotgames.com/lol/league/v4/grandmasterleagues/by-queue/{queque.value}'
         return self.__make_request(url=url)
 
-    def get_master_league(self, queque: GameCostants.Queque, region: GameCostants.ServerRegion):
+    def get_master_league(self, queque: GameCostants.Queue, region: GameCostants.ServerRegion):
         url = f'https://{region.value}.api.riotgames.com/lol/league/v4/masterleagues/by-queue/{queque.value}'
         return self.__make_request(url=url)
 
@@ -82,7 +82,7 @@ class RiotAPI:
         url = f'https://{region.value}.api.riotgames.com/lol/league/v4/entries/by-summoner/{summoner_id}'
         return self.__make_request(url=url)
 
-    def get_all_summoners_by_division_tier_queque(self, region: GameCostants.ServerRegion, division: GameCostants.Division, tier: GameCostants.Tier, queque: GameCostants.Queque, page: int = 1):
+    def get_all_summoners_by_division_tier_queque(self, region: GameCostants.ServerRegion, division: GameCostants.Division, tier: GameCostants.Tier, queque: GameCostants.Queue, page: int = 1):
         url = f'https://{region.value}.api.riotgames.com/lol/league/v4/entries/{queque.value}/{tier.value}/{division.value}?page={page}'
         return self.__make_request(url=url)
 
@@ -117,7 +117,21 @@ class MMR_API:
     def __init__(self) -> None:
         pass
 
-    def get_summoner_mmr_info(self, region: GameCostants.ServerRegion, summoner_name: str):
+    def get_summoner_mmr_info(self, summoner_name: str,  region: GameCostants.MMR_REGION):
         url = f'https://{region.value}.whatismymmr.com/api/v1/summoner?name={summoner_name}'
         response = requests.get(url)
-        return json.dumps(response.json())
+        match(response.status_code):
+            case 0:
+                raise LowLevelErrors.InternalServerError
+            case 1:
+                raise LowLevelErrors.InternalServerError
+            case 100:
+                raise LowLevelErrors.BadRequest
+            case 101:
+                raise LowLevelErrors.NoMMRData
+            case 200:
+                return json.dumps(response.json())
+            case 9001:
+                raise LowLevelErrors.RateLimiExceeded
+            case _:
+                raise LowLevelErrors.UnknowError

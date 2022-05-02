@@ -79,11 +79,11 @@ class Division(Enum):
     """4"""
 
 
-class Queque(Enum):
+class Queue(Enum):
     """Enumaton of all the queques."""
-    SOLO = 'RANKED_SOLO_5x5'
-    FLEX_SR = 'RANKED_FLEX_SR'
-    FLEX_TT = 'RANKED_FLEX_TT'
+    RANKED_SOLO = 'RANKED_SOLO_5x5'
+    RANKED_FLEX_SR = 'RANKED_FLEX_SR'
+    RANKED_FLEX_TT = 'RANKED_FLEX_TT'
 
 
 class GameType(Enum):
@@ -92,3 +92,28 @@ class GameType(Enum):
     NORMAL = 'normal'
     TOURNEY = 'tourney'
     TUTORIAL = 'tutorial'
+
+
+class MMR_REGION(Enum):
+    EUW = 'euw'
+    EUNE = 'eune'
+    KR = 'kr'
+    NA = 'na'
+
+
+class MMR_QUEUE(Enum):
+    RANKED_SOLO = 'ranked'
+    NORMAL = 'normal'
+    ARAM = 'ARAM'
+
+
+riot_region_to_mmr_region = {
+    ServerRegion.EUW: MMR_REGION.EUW,
+    ServerRegion.EUNE: MMR_REGION.EUNE,
+    ServerRegion.KR: MMR_REGION.KR,
+    ServerRegion.NA: MMR_REGION.NA
+}
+
+mmr_queue_to_riot_queue = {
+    MMR_QUEUE.RANKED_SOLO: Queue.RANKED_SOLO
+}
