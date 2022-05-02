@@ -60,8 +60,8 @@ class Summoner:
             final_data[GameCostants.Queue.RANKED_SOLO]['mmr'] = raw_mmr_data[GameCostants.MMR_QUEUE.RANKED_SOLO.value]['avg']
             final_data[GameCostants.Queue.RANKED_SOLO]['percentile'] = raw_mmr_data[GameCostants.MMR_QUEUE.RANKED_SOLO.value]['percentile']
             final_data[GameCostants.Queue.RANKED_SOLO]['error'] = raw_mmr_data[GameCostants.MMR_QUEUE.RANKED_SOLO.value]['err']
-            final_data[GameCostants.Queue.RANKED_SOLO]['expected_tier'], final_data[GameCostants.Queue.RANKED_SOLO]['expected_rank'] = raw_mmr_data[GameCostants.MMR_QUEUE.RANKED_SOLO.value]['closestRank'].split(
-                ' ')
+            final_data[GameCostants.Queue.RANKED_SOLO]['expected_tier'],
+            final_data[GameCostants.Queue.RANKED_SOLO]['expected_rank'] = raw_mmr_data[GameCostants.MMR_QUEUE.RANKED_SOLO.value]['closestRank'].split(' ')
             final_data[GameCostants.Queue.RANKED_SOLO]['expected_tier'] = GameCostants.Tier(final_data[GameCostants.Queue.RANKED_SOLO]['expected_tier'].upper())
             final_data[GameCostants.Queue.RANKED_SOLO]['expected_rank'] = GameCostants.Division(final_data[GameCostants.Queue.RANKED_SOLO]['expected_rank'])
         return final_data
