@@ -10,14 +10,14 @@ def set_riot_api_key(riot_api_key: str):
 
 class Summoner:
     __summoner_boring_info = {
-        'name': None,
-        'account_id': None,
-        'summoner_id': None,
-        'puuid': None,
-        'region': None
+        'name': str,
+        'account_id': str,
+        'summoner_id': str,
+        'puuid': str,
+        'region': GameCostants.ServerRegion
     }
 
-    def __init__(self, name: str, region: GameCostants.ServerRegion) -> None:
+    def __init__(self, name: str, region: GameCostants.ServerRegion):
         riot_api = Xayah.RiotAPI(Globals.riot_api_key)
         boring_data = json.loads(riot_api.get_summoner_by_name(name, region))
         self.__summoner_boring_info['name'] = boring_data['name']
@@ -26,7 +26,7 @@ class Summoner:
         self.__summoner_boring_info['puuid'] = boring_data['puuid']
         self.__summoner_boring_info['region'] = region
 
-    def get_ranked_info(self) -> None:
+    def get_ranked_info(self):
         riot_api = Xayah.RiotAPI(Globals.riot_api_key)
         raw_riot_data = json.loads(riot_api.get_all_ranked_stats_by_summoner_id(
             summoner_id=self.__summoner_boring_info['summoner_id'],
